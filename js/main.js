@@ -127,6 +127,44 @@ document.addEventListener('DOMContentLoaded', function () {
     }
   });
 
+  /* ---------- 8. 토끼 플로팅 안내원 ---------- */
+  // 토끼를 누르면 말풍선 메뉴가 열리고, 메뉴를 누르면 그 섹션으로 부드럽게 이동해요.
+  var guide = document.querySelector('.rabbit-guide');
+  if (guide) {
+    var guideBtn = guide.querySelector('.guide-avatar');
+    var guideClose = guide.querySelector('.guide-close');
+
+    function setGuide(open) {
+      guide.classList.toggle('is-open', open);
+      guideBtn.setAttribute('aria-expanded', String(open));
+      guideBtn.setAttribute('aria-label', open ? '안내 메뉴 닫기' : '안내 메뉴 열기');
+    }
+
+    guideBtn.addEventListener('click', function () {
+      setGuide(!guide.classList.contains('is-open'));
+    });
+    guideClose.addEventListener('click', function () { setGuide(false); });
+
+    // 메뉴를 누르면 해당 섹션으로 부드럽게 이동 + 말풍선 닫기
+    guide.querySelectorAll('.guide-menu a').forEach(function (link) {
+      link.addEventListener('click', function (e) {
+        var target = document.querySelector(link.getAttribute('href'));
+        if (!target) return;
+        e.preventDefault();
+        target.scrollIntoView({ behavior: reduceMotion ? 'auto' : 'smooth', block: 'start' });
+        setGuide(false);
+      });
+    });
+
+    // 바깥을 누르거나 Esc 키를 누르면 닫기
+    document.addEventListener('click', function (e) {
+      if (!guide.contains(e.target)) setGuide(false);
+    });
+    document.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape') setGuide(false);
+    });
+  }
+
   /* ---------- 7. 푸터 연도 자동 ---------- */
   var yearEl = document.querySelector('[data-year]');
   if (yearEl) yearEl.textContent = String(new Date().getFullYear());
