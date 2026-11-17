@@ -46,16 +46,23 @@ document.addEventListener('DOMContentLoaded', function () {
   window.addEventListener('scroll', onScroll, { passive: true });
   onScroll();
 
-  /* ---------- 3. 글자 타이핑 효과 ---------- */
+  /* ---------- 3. 글자 타이핑 효과 (반복) ---------- */
+  // 한 글자씩 천천히 쓰고 → 다 쓰면 2초 쉬고 → 지우고 처음부터 다시 써요.
+  var TYPE_SPEED = 150;   // 한 글자 쓰는 간격 (0.15초)
+  var PAUSE_AFTER = 2000; // 다 쓴 뒤 쉬는 시간 (2초)
   var typingEl = document.querySelector('[data-typing]');
   if (typingEl && !reduceMotion) {
     var fullText = typingEl.textContent;
     var i = 0;
-    typingEl.textContent = '';
     (function type() {
       typingEl.textContent = fullText.slice(0, i);
-      i += 1;
-      if (i <= fullText.length) setTimeout(type, 70);
+      if (i < fullText.length) {
+        i += 1;
+        setTimeout(type, TYPE_SPEED);
+      } else {
+        // 다 썼으면 2초 쉬었다가 처음부터
+        setTimeout(function () { i = 0; type(); }, PAUSE_AFTER);
+      }
     })();
   }
 
