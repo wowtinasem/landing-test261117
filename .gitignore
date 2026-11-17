@@ -1,0 +1,24 @@
+# 비밀 정보 (절대 올리면 안 돼요)
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+
+# Netlify 로컬 설정
+.netlify/
+
+# 패키지·빌드 폴더
+node_modules/
+dist/
+
+# 운영체제·편집기 파일
+.DS_Store
+Thumbs.db
+desktop.ini
+.vscode/
+.idea/
+*.log
+
+# Claude 미리보기 설정
+.claude/
